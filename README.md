@@ -1,5 +1,10 @@
 # @vitalets/vite-plugin-build-info
 
+[![Lint](https://github.com/vitalets/vite-plugin-build-info/actions/workflows/lint.yml/badge.svg)](https://github.com/vitalets/vite-plugin-build-info/actions/workflows/lint.yml)
+[![Test](https://github.com/vitalets/vite-plugin-build-info/actions/workflows/test.yml/badge.svg)](https://github.com/vitalets/vite-plugin-build-info/actions/workflows/test.yml)
+[![npm version](https://img.shields.io/npm/v/@vitalets/vite-plugin-build-info)](https://www.npmjs.com/package/@vitalets/vite-plugin-build-info)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+
 Expose Git commit, dirty status, and build time in a Vite application, with an optional JSON artifact.
 
 ## Install
