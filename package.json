@@ -1,0 +1,59 @@
+{
+  "name": "@vitalets/vite-plugin-build-info",
+  "version": "0.1.0",
+  "description": "Git commit, dirty status, and build timestamp for Vite applications.",
+  "type": "module",
+  "license": "MIT",
+  "author": "Vitaly Potapov",
+  "keywords": [
+    "vite",
+    "vite-plugin",
+    "build-info",
+    "git"
+  ],
+  "main": "./dist/build-info.js",
+  "types": "./dist/build-info.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/build-info.d.ts",
+      "import": "./dist/build-info.js"
+    },
+    "./client": {
+      "types": "./client.d.ts"
+    }
+  },
+  "files": [
+    "dist",
+    "client.d.ts",
+    "RELEASING.md",
+    "CHANGELOG.md"
+  ],
+  "engines": {
+    "node": "^24.16.0"
+  },
+  "peerDependencies": {
+    "vite": "^8.3.5"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.0",
+    "typescript": "^5.9.3",
+    "vite": "^8.3.5"
+  },
+  "scripts": {
+    "build": "tsc",
+    "typecheck": "tsc --noEmit",
+    "test": "node --test test/*.test.js",
+    "prepublishOnly": "npm run typecheck && npm test && npm run build"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vitalets/vite-plugin-build-info.git"
+  },
+  "homepage": "https://github.com/vitalets/vite-plugin-build-info#readme",
+  "bugs": {
+    "url": "https://github.com/vitalets/vite-plugin-build-info/issues"
+  }
+}
