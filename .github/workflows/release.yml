@@ -38,22 +38,20 @@ on:
         default: false
 
 jobs:
-  lint:
-    uses: ./.github/workflows/lint.yml
-    permissions:
-      contents: read
-  test:
-    uses: ./.github/workflows/test.yml
-    permissions:
-      contents: read
   publish:
-    needs: [lint, test]
     runs-on: ubuntu-24.04
     permissions:
       contents: write
+      actions: read
       id-token: write
     steps:
       - uses: actions/checkout@v7
+      - name: Ensure lint/test workflows passed
+        run: |
+          gh run list --workflow=lint.yml --branch="$GITHUB_REF_NAME" --commit="$GITHUB_SHA" --limit=1 --json conclusion --jq '.[0].conclusion' | grep -qx "success" || (echo "lint.yml workflow must pass for this commit before publishing" && exit 1)
+          gh run list --workflow=test.yml --branch="$GITHUB_REF_NAME" --commit="$GITHUB_SHA" --limit=1 --json conclusion --jq '.[0].conclusion' | grep -qx "success" || (echo "test.yml workflow must pass for this commit before publishing" && exit 1)
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - uses: actions/setup-node@v7
         with:
           node-version: 24

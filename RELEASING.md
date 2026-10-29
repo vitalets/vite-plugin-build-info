@@ -14,7 +14,7 @@ The package is prepared as `0.1.0`. No release has been made. Creating a remote 
 
 ## Subsequent releases
 
-Add release notes under `Unreleased`. After explicit release authorization, manually dispatch `.github/workflows/release.yml`, selecting a channel (`stable` or `next`) and increment (`patch`, `minor`, or `major`). The release workflow calls the reusable `lint.yml` and `test.yml` workflows for the same commit. The publish job requires both to pass through `needs: [lint, test]`, then explicitly installs dependencies and builds before calling `vitalets/npm-release@v2`. The lint workflow runs ESLint and type checking; the test workflow runs tests and a build. Both also run independently on pushes, pull requests, or manual dispatch.
+Add release notes under `Unreleased`. After explicit release authorization, manually dispatch `.github/workflows/release.yml`, selecting a channel (`stable` or `next`) and increment (`patch`, `minor`, or `major`). The release workflow uses `gh run list` to check the latest `lint.yml` and `test.yml` runs for the selected branch and exact release commit. Both must have concluded successfully; missing, pending, or failed runs stop the release. The workflow then explicitly installs dependencies and builds before calling `vitalets/npm-release@v2`. The lint workflow runs ESLint and type checking; the test workflow runs tests and a build. Both also run independently on pushes, pull requests, or manual dispatch.
 
 The action performs the full release cycle: version bump, changelog update for stable releases, commit/tag/push, npm publication through OIDC, and a GitHub Release for stable releases. Pull the resulting commit and tags afterward (`git pull --rebase`, then `git fetch --tags`).
 
