@@ -1,6 +1,6 @@
 {
   "name": "@vitalets/vite-plugin-build-info",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Git commit, dirty status, and build timestamp for Vite applications.",
   "type": "module",
   "license": "MIT",
