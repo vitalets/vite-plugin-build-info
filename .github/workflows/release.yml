@@ -38,7 +38,16 @@ on:
         default: false
 
 jobs:
+  lint:
+    uses: ./.github/workflows/lint.yml
+    permissions:
+      contents: read
+  test:
+    uses: ./.github/workflows/test.yml
+    permissions:
+      contents: read
   publish:
+    needs: [lint, test]
     runs-on: ubuntu-24.04
     permissions:
       contents: write
@@ -50,8 +59,6 @@ jobs:
           node-version: 24
           registry-url: 'https://registry.npmjs.org'
       - run: npm ci
-      - run: npm run typecheck
-      - run: npm test
       - run: npm run build
       - uses: vitalets/npm-release@v2
         with:

@@ -74,6 +74,7 @@ Missing Git metadata fails with an error; there are no CI fallbacks. `dirty: tru
 
 ```sh
 npm ci
+npm run lint
 npm run typecheck
 npm test
 npm run build

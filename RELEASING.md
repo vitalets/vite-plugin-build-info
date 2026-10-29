@@ -6,15 +6,15 @@ The package is prepared as `0.1.0`. No release has been made. Creating a remote 
 
 1. The GitHub destination is confirmed as `vitalets/vite-plugin-build-info` and recorded in `package.json`.
 2. Create the GitHub repository after authorization. Add a dated `## [0.1.0] - YYYY-MM-DD` section to `CHANGELOG.md`, moving the initial notes there and keeping an empty `## [Unreleased]` section. Commit the reviewed source, changelog, and lockfile, and push.
-3. From the clean checkout, run `npm ci`, `npm run typecheck`, `npm test`, and `npm run build`. Run `npm pack` and inspect the tarball. Verify its root JavaScript export and `/client` TypeScript declarations in a temporary consumer. Do not install it into another extension project.
-4. After explicit publication authorization, use `npm login` if necessary, then `npm publish --access public`. Authenticate interactively, never through credentials in chat. The `prepublishOnly` script checks types, runs tests, and rebuilds. This publishes `0.1.0` without a version bump.
+3. From the clean checkout, run `npm ci`, `npm run lint`, `npm run typecheck`, `npm test`, and `npm run build`. Run `npm pack` and inspect the tarball. Verify its root JavaScript export and `/client` TypeScript declarations in a temporary consumer. Do not install it into another extension project.
+4. After explicit publication authorization, use `npm login` if necessary, then `npm publish --access public`. Authenticate interactively, never through credentials in chat. There are no automatic npm lifecycle checks or builds; complete the explicit validation and build steps above before publishing. This publishes `0.1.0` without a version bump.
 5. After successful publication, tag the published commit `v0.1.0` and push the tag. If a release step fails, check npm and Git state before retrying.
 6. Configure npm trusted publishing for `@vitalets/vite-plugin-build-info`: owner `vitalets`, repository `vite-plugin-build-info`, workflow `release.yml`. The package must already exist on npm, as described by the release action. No long-lived npm token is used.
 7. Check the current action documentation and run the workflow with `dry-run: true` and channel `stable`. This previews the next release; it does not publish the initial version or verify npm authentication.
 
 ## Subsequent releases
 
-Add release notes under `Unreleased`. After explicit release authorization, manually dispatch `.github/workflows/release.yml`, selecting a channel (`stable` or `next`) and increment (`patch`, `minor`, or `major`). The workflow installs dependencies, checks types, tests, and builds before calling `vitalets/npm-release@v2`.
+Add release notes under `Unreleased`. After explicit release authorization, manually dispatch `.github/workflows/release.yml`, selecting a channel (`stable` or `next`) and increment (`patch`, `minor`, or `major`). The release workflow calls the reusable `lint.yml` and `test.yml` workflows for the same commit. The publish job requires both to pass through `needs: [lint, test]`, then explicitly installs dependencies and builds before calling `vitalets/npm-release@v2`. The lint workflow runs ESLint and type checking; the test workflow runs tests and a build. Both also run independently on pushes, pull requests, or manual dispatch.
 
 The action performs the full release cycle: version bump, changelog update for stable releases, commit/tag/push, npm publication through OIDC, and a GitHub Release for stable releases. Pull the resulting commit and tags afterward (`git pull --rebase`, then `git fetch --tags`).
 
